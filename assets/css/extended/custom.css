@@ -4,20 +4,20 @@
 :root {
   --main-width: 1400px;
   --nav-width: 1400px;
-  --theme: #fdfcf8;
-  --entry: #f8f5ee;
-  --primary: #1a1a1a;
-  --secondary: #888;
-  --tertiary: #e8e4d8;
-  --content: #333;
-  --code-block-bg: #f5f5f3;
-  --code-bg: #f5f5f3;
-  --border: #e8e4d8;
-  --accent: #a0582a;
-  --accent-light: rgba(160, 88, 42, 0.07);
-  --accent-hover: #b86830;
-  --text-faint: #bbb;
-  --border-light: #f0ebe0;
+  --theme: #fdfcfa;
+  --entry: #f5f3ef;
+  --primary: #18181b;
+  --secondary: #71717a;
+  --tertiary: #e4e4e7;
+  --content: #27272a;
+  --code-block-bg: #f5f4f2;
+  --code-bg: #f5f4f2;
+  --border: #d4d4d8;
+  --accent: #b8860b;
+  --accent-light: rgba(184, 134, 11, 0.07);
+  --accent-hover: #d4a020;
+  --text-faint: #a1a1aa;
+  --border-light: #e4e4e7;
 }
 
 /* Dark mode overrides (Dark Engineer palette) */
@@ -79,7 +79,8 @@ h1, h2, h3, h4 {
 .journal-sidebar {
   width: 280px;
   padding: 48px 32px 48px 24px;
-  border-right: 1px solid var(--border);
+  background: #27272a;
+  border-right: 1px solid #3f3f46;
   position: sticky;
   top: var(--header-height, 60px);
   height: calc(100vh - var(--header-height, 60px));
@@ -93,7 +94,7 @@ h1, h2, h3, h4 {
 .toc-label {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: var(--text-faint, #bbb);
+  color: #52525b;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-bottom: 10px;
@@ -105,20 +106,20 @@ h1, h2, h3, h4 {
   display: block;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--secondary);
+  color: #a1a1aa;
   text-decoration: none;
   padding: 7px 0 7px 14px;
   border-left: 2px solid transparent;
   transition: all 200ms ease-out;
 }
 .toc-nav-item:hover {
-  color: var(--accent);
-  border-left-color: var(--accent);
+  color: #daa520;
+  border-left-color: #daa520;
   padding-left: 18px;
 }
 .toc-nav-item.active {
-  color: var(--accent);
-  border-left-color: var(--accent);
+  color: #daa520;
+  border-left-color: #daa520;
   font-weight: 700;
 }
 
@@ -129,29 +130,29 @@ h1, h2, h3, h4 {
   gap: 10px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--secondary);
+  color: #a1a1aa;
   text-decoration: none;
   padding: 5px 0;
   transition: color 200ms ease-out;
 }
-.topic-item:hover { color: var(--accent); }
+.topic-item:hover { color: #daa520; }
 .topic-name { min-width: 52px; }
 .topic-bar {
   height: 4px;
-  background: var(--tertiary);
+  background: #3f3f46;
   border-radius: 2px;
   flex: 1;
   overflow: hidden;
 }
 .topic-bar-fill {
   height: 100%;
-  background: var(--accent);
+  background: #daa520;
   border-radius: 2px;
   transition: width 300ms ease-out;
 }
 .topic-count {
   font-size: 11px;
-  color: var(--text-faint, #bbb);
+  color: #52525b;
   min-width: 20px;
   text-align: right;
 }
@@ -161,21 +162,21 @@ h1, h2, h3, h4 {
 .sidebar-footer {
   margin-top: auto;
   padding-top: 24px;
-  border-top: 1px solid var(--border-light, #f0ebe0);
+  border-top: 1px solid #3f3f46;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
-  color: var(--text-faint, #bbb);
+  color: #52525b;
   line-height: 1.6;
 }
 
 :root[data-theme="dark"] .sidebar-footer { color: #555; border-top-color: #2a2b2f; }
 
 .sidebar-footer a {
-  color: var(--accent);
+  color: #daa520;
   text-decoration: none;
   transition: color 150ms ease-out;
 }
-.sidebar-footer a:hover { color: var(--accent-hover); }
+.sidebar-footer a:hover { color: #e8b830; }
 
 /* ─── Journal main content ─── */
 .journal-main {
@@ -425,7 +426,7 @@ h1, h2, h3, h4 {
     position: static;
     padding: 24px;
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #3f3f46;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
