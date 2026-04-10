@@ -2,6 +2,8 @@
 
 /* Light mode overrides */
 :root {
+  --main-width: 1400px;
+  --nav-width: 1400px;
   --theme: #fdfcf8;
   --entry: #f8f5ee;
   --primary: #1a1a1a;
