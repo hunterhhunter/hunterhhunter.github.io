@@ -1,0 +1,152 @@
+{{- define "main" }}
+
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+
+{{/* Collect tag counts for topic bars */}}
+{{- $tagCounts := dict }}
+{{- $maxCount := 1 }}
+{{- range site.Taxonomies.tags }}
+  {{- $count := .Count }}
+  {{- if gt $count $maxCount }}{{ $maxCount = $count }}{{ end }}
+{{- end }}
+
+<div class="journal-page">
+  {{/* ─── Sidebar ─── */}}
+  <aside class="journal-sidebar" role="navigation" aria-label="Table of contents">
+    <nav class="toc-section" aria-label="Page sections">
+      <div class="toc-label">Contents</div>
+      <a href="#recent" class="toc-nav-item active">&sect;1 Recent Publications</a>
+      <a href="#about" class="toc-nav-item">&sect;2 About</a>
+    </nav>
+
+    {{- if gt (len site.Taxonomies.tags) 0 }}
+    <div class="toc-section" aria-label="Topics">
+      <div class="toc-label">Topics</div>
+      {{- range $name, $taxonomy := site.Taxonomies.tags }}
+      {{- $count := .Count }}
+      {{- $pct := mul (div (float $count) (float $maxCount)) 100 }}
+      <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}/" class="topic-item">
+        <span class="topic-name">{{ $name }}</span>
+        <div class="topic-bar" role="progressbar" aria-valuenow="{{ $pct | int }}" aria-valuemin="0" aria-valuemax="100">
+          <div class="topic-bar-fill" style="width: {{ $pct | int }}%"></div>
+        </div>
+        <span class="topic-count">{{ $count }}</span>
+      </a>
+      {{- end }}
+    </div>
+    {{- end }}
+
+    <footer class="sidebar-footer">
+      {{- range site.Params.socialIcons }}
+      <a href="{{ .url }}" target="_blank" rel="noreferrer">{{ .name }}</a>
+      {{- end }}
+      &middot; <a href="{{ "index.xml" | absURL }}">RSS</a>
+      <div style="margin-top: 8px;">
+        {{ len $pages }} publications
+      </div>
+    </footer>
+  </aside>
+
+  {{/* ─── Main Content ─── */}}
+  <main class="journal-main" id="main-content">
+    <header class="journal-header">
+      <div class="journal-name">{{ site.Title }} &middot; Proceedings of a Learning Engineer</div>
+      <h1>Notes on ML Compilers<br>and Systems Programming</h1>
+      <div class="author-name">{{ site.Params.author | default "Hunter" }}</div>
+      <div class="affiliation">SWE Student &middot; ML Compiler Engineering</div>
+      <nav class="header-nav" aria-label="Main navigation">
+        {{- range site.Menus.main }}
+        <a href="{{ .URL | absURL }}">{{ .Name | lower }}</a>
+        {{- end }}
+      </nav>
+    </header>
+
+    {{- with site.Params.homeInfoParams }}
+    <section class="abstract" aria-label="Abstract">
+      <div class="abstract-title">Abstract</div>
+      <p>{{ .Content | markdownify }}</p>
+      {{- if gt (len site.Taxonomies.tags) 0 }}
+      <div class="keywords">
+        <span class="kw-label">Keywords:</span>
+        {{- range $name, $taxonomy := site.Taxonomies.tags }}
+        <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}/" class="kw">{{ $name }}</a>
+        {{- end }}
+      </div>
+      {{- end }}
+    </section>
+    {{- end }}
+
+    <section id="recent" aria-label="Recent publications">
+      <div class="section-heading">
+        <span class="section-num">&sect;1</span>
+        <span>Recent Publications</span>
+      </div>
+
+      <div class="articles">
+        {{- $paginator := .Paginate $pages }}
+        {{- range $index, $page := $paginator.Pages }}
+        {{- $globalIndex := add (mul (sub $paginator.PageNumber 1) $paginator.PageSize) (add $index 1) }}
+        <a href="{{ .Permalink }}" class="article-entry">
+          <div class="article-num">[{{ $globalIndex }}]</div>
+          <div class="article-body">
+            <div class="article-title">{{ .Title }}</div>
+            <div class="article-meta">
+              <span>{{ .Date.Format "2006.01.02" }}</span>
+              {{- with .Params.categories }}
+              <span class="meta-dot">&middot;</span>
+              <span>{{ index . 0 | lower }}</span>
+              {{- end }}
+              {{- if site.Params.ShowReadingTime }}
+              <span class="meta-dot">&middot;</span>
+              <span>{{ .ReadingTime }} min read</span>
+              {{- end }}
+            </div>
+            {{- if not (.Param "hideSummary") }}
+            <div class="article-excerpt">{{ .Summary | plainify | truncate 120 }}</div>
+            {{- end }}
+            {{- with .Params.tags }}
+            <div class="article-tags">
+              {{- range . }}
+              <span class="article-tag">{{ . }}</span>
+              {{- end }}
+            </div>
+            {{- end }}
+          </div>
+          {{- if site.Params.ShowReadingTime }}
+          <div class="read-time">
+            {{ .ReadingTime }}m
+            {{- $pct := mul (div (float .ReadingTime) 15.0) 100 }}
+            {{- if gt $pct 100 }}{{ $pct = 100 }}{{ end }}
+            <div class="time-bar"><div class="time-bar-fill" style="width: {{ $pct | int }}%"></div></div>
+          </div>
+          {{- end }}
+        </a>
+        {{- end }}
+      </div>
+
+      {{- if gt $paginator.TotalPages 1 }}
+      <footer class="page-footer" style="margin-top: 32px;">
+        <nav class="pagination">
+          {{- if $paginator.HasPrev }}
+          <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">&laquo; {{ i18n "prev_page" | default "이전" }}</a>
+          {{- end }}
+          {{- if $paginator.HasNext }}
+          <a class="next" href="{{ $paginator.Next.URL | absURL }}">{{ i18n "next_page" | default "다음" }} &raquo;</a>
+          {{- end }}
+        </nav>
+      </footer>
+      {{- end }}
+    </section>
+
+    <section id="about" aria-label="About the author">
+      <div class="section-heading">
+        <span class="section-num">&sect;2</span>
+        <span>About</span>
+      </div>
+      <p>{{ site.Params.homeInfoParams.Content | markdownify }}</p>
+    </section>
+  </main>
+</div>
+
+{{- end }}
