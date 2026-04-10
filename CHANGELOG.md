@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.0.1] - 2026-04-10
+
+### Fixed
+- 데스크톱에서 페이지가 좁게 보이던 문제 수정 (PaperMod 테마의 --main-width, --nav-width 변수 오버라이드)
+
 ## [0.1.0.0] - 2026-04-10
 
 ### Added
