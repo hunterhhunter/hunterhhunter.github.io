@@ -86,7 +86,7 @@
       <div class="articles">
         {{- $paginator := .Paginate $pages }}
         {{- range $index, $page := $paginator.Pages }}
-        {{- $globalIndex := add (mul (sub $paginator.PageNumber 1) $paginator.PageSize) (add $index 1) }}
+        {{- $globalIndex := add (mul (sub $paginator.PageNumber 1) $paginator.PagerSize) (add $index 1) }}
         <a href="{{ .Permalink }}" class="article-entry">
           <div class="article-num">[{{ $globalIndex }}]</div>
           <div class="article-body">
